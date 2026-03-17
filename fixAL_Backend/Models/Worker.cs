@@ -21,6 +21,8 @@ public class Worker
     //Navigation property : worker.category.name
     public ICollection<Categories> Categories { get; set; } = new List<Categories>();
     public ICollection<Services> Services { get; set; } = new List<Services>();
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public ICollection<Availability> Availabilities { get; set; } = new List<Availability>();
     
     
 }

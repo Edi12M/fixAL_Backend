@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fixAL_Backend.Data;
 
@@ -11,9 +12,11 @@ using fixAL_Backend.Data;
 namespace fixAL_Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260317161243_ConfigureMessagesTable")]
+    partial class ConfigureMessagesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,59 +38,6 @@ namespace fixAL_Backend.Migrations
                     b.HasIndex("WorkersId");
 
                     b.ToTable("CategoriesWorker");
-                });
-
-            modelBuilder.Entity("fixAL_Backend.Models.AdminLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PerformedBy")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.ToTable("AdminLog");
-                });
-
-            modelBuilder.Entity("fixAL_Backend.Models.Availability", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("WorkerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkerId");
-
-                    b.ToTable("Availability");
                 });
 
             modelBuilder.Entity("fixAL_Backend.Models.Booking", b =>
@@ -122,7 +72,7 @@ namespace fixAL_Backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Booking");
                 });
 
             modelBuilder.Entity("fixAL_Backend.Models.Categories", b =>
@@ -189,68 +139,7 @@ namespace fixAL_Backend.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("fixAL_Backend.Models.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("NotificationText")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notification");
-                });
-
-            modelBuilder.Entity("fixAL_Backend.Models.Review", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("WorkerId");
-
-                    b.ToTable("Reviews");
+                    b.ToTable("Message");
                 });
 
             modelBuilder.Entity("fixAL_Backend.Models.Services", b =>
@@ -373,28 +262,6 @@ namespace fixAL_Backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("fixAL_Backend.Models.AdminLog", b =>
-                {
-                    b.HasOne("fixAL_Backend.Models.User", "Admin")
-                        .WithMany("AdminLogs")
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
-                });
-
-            modelBuilder.Entity("fixAL_Backend.Models.Availability", b =>
-                {
-                    b.HasOne("fixAL_Backend.Models.Worker", "Worker")
-                        .WithMany("Availabilities")
-                        .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Worker");
-                });
-
             modelBuilder.Entity("fixAL_Backend.Models.Booking", b =>
                 {
                     b.HasOne("fixAL_Backend.Models.Services", "Service")
@@ -431,36 +298,6 @@ namespace fixAL_Backend.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("fixAL_Backend.Models.Notification", b =>
-                {
-                    b.HasOne("fixAL_Backend.Models.User", "User")
-                        .WithMany("Notifications")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("fixAL_Backend.Models.Review", b =>
-                {
-                    b.HasOne("fixAL_Backend.Models.User", "User")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("fixAL_Backend.Models.Worker", "Worker")
-                        .WithMany("Reviews")
-                        .HasForeignKey("WorkerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("Worker");
                 });
 
             modelBuilder.Entity("fixAL_Backend.Models.Services", b =>
@@ -516,25 +353,15 @@ namespace fixAL_Backend.Migrations
 
             modelBuilder.Entity("fixAL_Backend.Models.User", b =>
                 {
-                    b.Navigation("AdminLogs");
-
                     b.Navigation("Bookings");
 
-                    b.Navigation("Notifications");
-
                     b.Navigation("ReceivedMessages");
-
-                    b.Navigation("Reviews");
 
                     b.Navigation("SentMessages");
                 });
 
             modelBuilder.Entity("fixAL_Backend.Models.Worker", b =>
                 {
-                    b.Navigation("Availabilities");
-
-                    b.Navigation("Reviews");
-
                     b.Navigation("Services");
                 });
 #pragma warning restore 612, 618

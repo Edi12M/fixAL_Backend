@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using fixAL_Backend.Data;
 
@@ -11,9 +12,11 @@ using fixAL_Backend.Data;
 namespace fixAL_Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260317162834_CreatedAvailabilityTable")]
+    partial class CreatedAvailabilityTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,35 +38,6 @@ namespace fixAL_Backend.Migrations
                     b.HasIndex("WorkersId");
 
                     b.ToTable("CategoriesWorker");
-                });
-
-            modelBuilder.Entity("fixAL_Backend.Models.AdminLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Action")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PerformedBy")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdminId");
-
-                    b.ToTable("AdminLog");
                 });
 
             modelBuilder.Entity("fixAL_Backend.Models.Availability", b =>
@@ -373,17 +347,6 @@ namespace fixAL_Backend.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("fixAL_Backend.Models.AdminLog", b =>
-                {
-                    b.HasOne("fixAL_Backend.Models.User", "Admin")
-                        .WithMany("AdminLogs")
-                        .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
-                });
-
             modelBuilder.Entity("fixAL_Backend.Models.Availability", b =>
                 {
                     b.HasOne("fixAL_Backend.Models.Worker", "Worker")
@@ -516,8 +479,6 @@ namespace fixAL_Backend.Migrations
 
             modelBuilder.Entity("fixAL_Backend.Models.User", b =>
                 {
-                    b.Navigation("AdminLogs");
-
                     b.Navigation("Bookings");
 
                     b.Navigation("Notifications");
